@@ -26,14 +26,26 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function success(pos) {
-    const lat = pos.coords.latitude.toFixed(6);
-    const lng = pos.coords.longitude.toFixed(6);
-    const acc = pos.coords.accuracy;
+    const lat = pos.coords.latitude;
+    const lng = pos.coords.longitude;
 
-    // Kirim lokasi ke URL Tally
-    const tallyURL = `https://tally.so/r/q45a5Y?location=${lat},${lng},${acc}`;
+    // Step 2: Reverse Geocoding (mengubah lat long jadi alamat)
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`;
 
-    document.getElementById("tallyframe").src = tallyURL;
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        const alamat = data.display_name || "Alamat tidak ditemukan";
+
+        // Step 3: Kirim ke Tally
+        const tallyURL = `https://tally.so/r/q45a5Y?location=${encodeURIComponent(alamat)}`;
+        document.getElementById("tallyframe").src = tallyURL;
+      })
+      .catch(err => {
+        console.log("Reverse geocoding error:", err);
+        const fallback = `${lat},${lng}`;
+        document.getElementById("tallyframe").src = `https://tally.so/r/q45a5Y?location=${fallback}`;
+      });
   }
 
   function error(err) {
