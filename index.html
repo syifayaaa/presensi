@@ -14,18 +14,27 @@
 </iframe>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  navigator.geolocation.getCurrentPosition(function (pos) {
-    const lat = pos.coords.latitude;
-    const lng = pos.coords.longitude;
-    const acc = pos.coords.accuracy;
+// Pastikan script menunggu embed siap
+window.addEventListener("tally:load", function () {
+  if (!navigator.geolocation) {
+    console.log("GPS not supported");
+    return;
+  }
 
-    window.Tally?.onEmbedLoad(() => {
+  navigator.geolocation.getCurrentPosition(
+    function (pos) {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      const acc = pos.coords.accuracy;
+
+      // Kirim ke hidden field 'location' di Tally
       Tally.setAnswer("location", `${lat},${lng},${acc}`);
-    });
-  });
+    },
+    function (err) {
+      console.log("GPS error:", err);
+    }
+  );
 });
 </script>
-
 </body>
 </html>
