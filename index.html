@@ -2,16 +2,30 @@
 <html>
 <head>
   <title>Absensi Kelas</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    
+    iframe {
+      width: 100%;
+      height: 100vh;
+      border: none;
+    }
+  </style>
+
 </head>
 <body>
 
 <iframe 
   id="tallyframe"
-  src="" 
-  loading="lazy"
-  width="100%" 
-  height="800" 
-  frameborder="0">
+  src=""
+  data-tally-embed="fullscreen"
+  style="width:100%; height:100vh; border:0; margin:0; padding:0; display:block;"
+  loading="lazy">
 </iframe>
 
 <script>
